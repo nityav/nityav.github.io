@@ -109,7 +109,7 @@
             console.log(data);
             var output = '';
             for (var result = 0; result < data.streams.length; result++) {
-                output += "<div class=\"col-xs-12 col-sm-12 col-lg-12 stream\"><img class=\"img-test\" src=\"" + data.streams[result].preview.medium + "\"></img><div float=\"right\"><h3>" + data.streams[result].game + "</h3> Game Name:" + data.streams[result].channel.game + " - " + data.streams[result].viewers + " Viewers<br/>Stream Description: " + data.streams[result].channel.status + "</div></div>";
+                output += "<div class=\"col-xs-12 col-sm-12 col-lg-12 stream\"><img class=\"img-test img-responsive img-thumbnail\" src=\"" + data.streams[result].preview.medium + "\"></img><div float=\"right\"><h3>" + data.streams[result].game + "</h3> Game Name:" + data.streams[result].channel.game + " - " + data.streams[result].viewers + " Viewers<br/>Stream Description: " + data.streams[result].channel.status + "</div></div>";
             }
             document.getElementById("results").innerHTML = output;
 
