@@ -79,7 +79,7 @@
                         });
                     }
                     else {
-                        document.getElementById("error").innerHTML = "<h3> No more results</h3>";
+                        document.getElementById("error").innerHTML = "<p class='bg-warning'><h3> No more results</h3></p>";
                     }
 
                     console.log(counter);
@@ -98,7 +98,7 @@
                 });
             }
             else {
-                document.getElementById("error").innerHTML = "<h2> No Previous results</h2>";
+                document.getElementById("error").innerHTML = "<p class='bg-warning'><h3> No Previous results</h3></p>";
 
             }
             console.log(counter);
@@ -109,7 +109,7 @@
             console.log(data);
             var output = '';
             for (var result = 0; result < data.streams.length; result++) {
-                output += "<div class=\"col-xs-12 col-sm-12 col-lg-12 stream\"><img class=\"img-test img-responsive img-thumbnail\" src=\"" + data.streams[result].preview.medium + "\"></img><div float=\"right\"><h3>" + data.streams[result].game + "</h3> Game Name:" + data.streams[result].channel.game + " - " + data.streams[result].viewers + " Viewers<br/>Stream Description: " + data.streams[result].channel.status + "</div></div>";
+                output += "<div class=\"col-xs-12 col-sm-12 col-lg-12 stream\"><img class=\"img-test img-responsive\" src=\"" + data.streams[result].preview.medium + "\"></img><div float=\"right\"><h3>" + data.streams[result].game + "</h3> Game Name:" + data.streams[result].channel.game + " - " + data.streams[result].viewers + " Viewers<br/>Stream Description: " + data.streams[result].channel.status + "</div></div>";
             }
             document.getElementById("results").innerHTML = output;
 
@@ -153,9 +153,9 @@
                 <input class="btn btn-primary col-lg-1" type="button" value="Search" onclick="search()" />
                 <div class="row col-xs-12 col-sm-12 col-lg-12">
                     <div id="Summary" style="display: none">
-                        <div style="float: left">
+                        <div class="pull-left">
                             Total results :<span id="total"></span></div>
-                        <div id="pagination" style="float: right">
+                        <div id="pagination" class="pull-right">
                             <img src="images/arrow-left.png" id="arrow-left" onclick="prev()" />
                             <span id="pageNumber"></span>
                             <img src="images/arrow-right.png" id="arrow-right" onclick="Next()" />
@@ -163,7 +163,7 @@
                     </div>
                 </div>
                 <!--/row-->
-                <div id="error" class="row col-xs-12 col-sm-12 col-lg-12 has-error">
+                <div id="error" class="row col-xs-12 col-sm-12 col-lg-12 text-warning">
                 </div>
                 <div id="results" class="row col-xs-12 col-sm-12 col-lg-12">
                 </div>
