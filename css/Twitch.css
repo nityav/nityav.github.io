@@ -16,3 +16,9 @@ margin: 0px 10px 0px 0px;
 {
     color:White;
 }
+
+.cursor
+{
+  cursor: pointer; 
+  cursor: hand; 
+}
