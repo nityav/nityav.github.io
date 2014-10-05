@@ -107,9 +107,11 @@
      function Next() {
          document.getElementById("error").innerHTML = "";
          if (counter < page) {
+
+             var url = 'https://api.twitch.tv/kraken/search/streams?q=' + key + '&limit=10&offset=' + counter * 10 + '&callback=?'
              ++counter;
-             var url = 'https://api.twitch.tv/kraken/search/streams?q=' + key + '&limit=10&offset=' + (counter - 1) * 10 + '&callback=?'
              getJSONP(url, showResults);
+            
 
          }
          else {
