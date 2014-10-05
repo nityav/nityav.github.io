@@ -32,33 +32,27 @@
 
 
                 function search() {
-                    //reset all the page
-                    document.getElementById("error").innerHTML = "";
-                    document.getElementById("Summary").style.display = 'none';
-                    //end reset
-                    //creating a global variable
+                   
                     key = document.getElementById('query').value;
                     counter = 1;
-                    //checking if a key value is empty or default
-                    if (key == null || key.trim() == "" || key == "Search Query") {
+                  //checking if a key value is empty or default
+                    if (key == "Search Query") {
                         alert('Please enter something');
                         document.getElementById('query').focus();
                         return false; // cancel submission and go back to the textbox
                     }
-
                     else {
+                        document.getElementById("error").innerHTML = "";
+                        document.getElementById("Summary").style.display = 'none';
                         var url = 'https://api.twitch.tv/kraken/search/streams?q=' + key + '&limit=10&callback=?'; 
                         // calling the twitch API
                         getJSONP(url, function (data) { // anonymous function to do all the processing
                             if (data._total > 0) { // check if ateast one result exist
-                                document.getElementById('total').innerHTML = data._total; // output total results
-                                page = Math.ceil(data._total / 10); // creating a page global variable to keep track of the page
-                                document.getElementById("pageNumber").innerHTML = '1 /' + page; //display page
-                                showResults(data); // show the results 
-                                document.getElementById("Summary").style.display = 'block';
+                              showResults(data); // show the results 
+                              
                             }
                             else { // no result found
-                                document.getElementById("results").innerHTML = "<h3> No results found! please try again</h3>";
+                                document.getElementById("results").innerHTML = "<h3> No results found! Please try another search.</h3>";
                                 document.getElementById('query').focus(); // giving the texbox focus again
                             }
 
@@ -71,15 +65,11 @@
                     if (counter < page) {
                         ++counter;
                         var url = 'https://api.twitch.tv/kraken/search/streams?q=' + key + '&limit=10&offset=' + (counter - 1) * 10 + '&callback=?'
-                        getJSONP(url, function (data) {
-                            showResults(data);
-                            document.getElementById('total').innerHTML = data._total; // in a lot of cases i have observed the total changes so checking it with each call
-                            page = Math.ceil(data._total / 10);
-                            document.getElementById("pageNumber").innerHTML = counter + "/" + page;
-                        });
+                        getJSONP(url,showResults);                     
+                       
                     }
                     else {
-                        document.getElementById("error").innerHTML = "<p class='bg-warning'><h3> No more results</h3></p>";
+                        document.getElementById("error").innerHTML = "<p class='bg-warning'><h3> You have reached the end.No more results!</h3></p>";
                     }
 
                     console.log(counter);
@@ -90,15 +80,10 @@
             if (counter > 1) {
                 --counter;
                 var url = 'https://api.twitch.tv/kraken/search/streams?q=' + key + '&limit=10&offset=' + counter * 10 + '&callback=?'
-                getJSONP(url, function (data) {
-                    showResults(data);
-                    document.getElementById('total').innerHTML = data._total;
-                    page = Math.ceil(data._total / 10);
-                    document.getElementById("pageNumber").innerHTML = counter + "/" + page;
-                });
+                getJSONP(url, showResults); 
             }
             else {
-                document.getElementById("error").innerHTML = "<p class='bg-warning'><h3> No Previous results</h3></p>";
+                document.getElementById("error").innerHTML = "<p class='bg-warning'><h3> You are on page 1.No Previous results</h3></p>";
 
             }
             console.log(counter);
@@ -112,6 +97,10 @@
                 output += "<div class=\"col-xs-12 col-sm-12 col-lg-12 stream\"><img class=\"img-test img-responsive\" src=\"" + data.streams[result].preview.medium + "\"></img><div float=\"right\"><h3>" + data.streams[result].game + "</h3> Game Name:" + data.streams[result].channel.game + " - " + data.streams[result].viewers + " Viewers<br/>Stream Description: " + data.streams[result].channel.status + "</div></div>";
             }
             document.getElementById("results").innerHTML = output;
+            document.getElementById('total').innerHTML = data._total; // in a lot of cases i have observed the total changes so checking it with each call
+            page = Math.ceil(data._total / 10);
+            document.getElementById("pageNumber").innerHTML = counter + "/" + page;
+            document.getElementById("Summary").style.display = 'block';
 
 
         }
