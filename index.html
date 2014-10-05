@@ -22,14 +22,22 @@
         <!-- /.container  -->
     </div>
     <!-- /.navbar -->
+   
     <div class="container">
         <div class="row row-offcanvas row-offcanvas-right">
             <div class="col-xs-12 col-sm-12 col-lg-12 jumbotron">
                 <div class="form-group col-lg-11 col-sm-6 col-xs-8">
                     <input type="text" class="form-control" id="query" style="color: #888;" value="Search Query"
                         onfocus="inputFocus(this)" onblur="inputBlur(this)" />
+                        
                 </div>
-                <input class="btn btn-primary col-lg-1" type="button" value="Search" onclick="search()" />
+                <input class="btn btn-primary col-lg-1" type="button" id="search" value="Search"  onclick="search()" />
+                
+                
+                <div id="loading" class="col-xs-12 col-sm-12 col-lg-12 jumbotron" style="display: none">
+    Loading! Please wait...
+</div>
+                <div id="content" style="display: block">
                 <div class="row col-xs-12 col-sm-12 col-lg-12">
                     <div id="Summary" style="display: none">
                         <div class="pull-left">
@@ -46,6 +54,9 @@
                 </div>
                 <div id="results" class="row col-xs-12 col-sm-12 col-lg-12">
                 </div>
+
+                </div>
+
             </div>
             <!--/span-->
         </div>
@@ -76,7 +87,9 @@
 
      function search() {
 
-         key = document.getElementById('query').value;
+         document.getElementById("loading").style.display = "block";
+         document.getElementById("content").style.display = "none";
+        key = document.getElementById('query').value;
          counter = 1;
          //checking if a key value is empty or default
          if (key == "Search Query") {
@@ -97,6 +110,8 @@
                  else { // no result found
                      document.getElementById("results").innerHTML = "<h3> No results found! Please try another search.</h3>";
                      document.getElementById('query').focus(); // giving the texbox focus again
+                     document.getElementById("loading").style.display = "none";
+                     document.getElementById("content").style.display = "block";
                  }
 
              });
@@ -104,6 +119,8 @@
      }
 
      function Next() {
+         document.getElementById("loading").style.display = "block";
+         document.getElementById("content").style.display = "none";
          document.getElementById("error").innerHTML = "";
          if (counter < page) {
             var url = 'https://api.twitch.tv/kraken/search/streams?q=' + key + '&limit=10&offset=' + counter * 10 + '&callback=?' // setting offset with counter by 3
@@ -114,12 +131,16 @@
          }
          else {
              document.getElementById("error").innerHTML = "<p class='bg-warning'><h3> You have reached the end.No more results!</h3></p>";
+             document.getElementById("loading").style.display = "none";
+             document.getElementById("content").style.display = "block";
          }
 
          console.log(counter);
      }
 
      function prev() {
+         document.getElementById("loading").style.display = "block";
+         document.getElementById("content").style.display = "none";
          document.getElementById("error").innerHTML = "";
          if (counter > 1) {
              --counter; // updating counter to set offset
@@ -128,6 +149,8 @@
          }
          else {
              document.getElementById("error").innerHTML = "<p class='bg-warning'><h3> You are on page 1.No Previous results</h3></p>";
+             document.getElementById("loading").style.display = "none";
+             document.getElementById("content").style.display = "block";
 
          }
          console.log(counter);
@@ -136,15 +159,24 @@
 
      function showResults(data) {
          console.log(data);
-         var output = '';
-         for (var result = 0; result < data.streams.length; result++) {
-             output += "<div class=\"col-xs-12 col-sm-12 col-lg-12 stream\"><img class=\"img-test img-responsive\" src=\"" + data.streams[result].preview.medium + "\"></img><div float=\"right\"><h3>" + data.streams[result].game + "</h3> Game Name:" + data.streams[result].channel.game + " - " + data.streams[result].viewers + " Viewers<br/>Stream Description: " + data.streams[result].channel.status + "</div></div>";
+         if (data._total > 0) {
+             var output = '';
+             for (var result = 0; result < data.streams.length; result++) {
+                 output += "<div class=\"col-xs-12 col-sm-12 col-lg-12 stream\"><img class=\"img-test img-responsive\" src=\"" + data.streams[result].preview.medium + "\"></img><div float=\"right\"><h3>" + data.streams[result].game + "</h3> Game Name:" + data.streams[result].channel.game + " - " + data.streams[result].viewers + " Viewers<br/>Stream Description: " + data.streams[result].channel.status + "</div></div>";
+             }
+             document.getElementById("results").innerHTML = output;  //print result
+             document.getElementById('total').innerHTML = data._total; // in a lot of cases i have observed the total changes so checking it with each call
+             page = Math.ceil(data._total / 10); // count the number of pages
+             document.getElementById("pageNumber").innerHTML = counter + "/" + page; // update the page number
+             document.getElementById("Summary").style.display = 'block'; // show summary
+             document.getElementById("loading").style.display = "none";
+             document.getElementById("content").style.display = "block";
          }
-         document.getElementById("results").innerHTML = output;  //print result
-         document.getElementById('total').innerHTML = data._total; // in a lot of cases i have observed the total changes so checking it with each call
-         page = Math.ceil(data._total / 10); // count the number of pages
-         document.getElementById("pageNumber").innerHTML = counter + "/" + page; // update the page number
-         document.getElementById("Summary").style.display = 'block'; // show summary
+         else {
+             document.getElementById("results").innerHTML = "<h3> No results found! Please try another search.</h3>";
+             document.getElementById("loading").style.display = "none";
+             document.getElementById("content").style.display = "block";
+         }
           
 
      }
