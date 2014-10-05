@@ -10,7 +10,6 @@ margin: 0px 10px 0px 0px;
 -moz-transform:scale(0.5);
 -webkit-transform:scale(0.5);
  transform:scale(0.5);
- background-image:url('../images/ajax-loader.gif') no-repeat;
 }
 
 .heading
