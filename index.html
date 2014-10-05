@@ -87,8 +87,6 @@
 
      function search() {
 
-         document.getElementById("loading").style.display = "block";
-         document.getElementById("content").style.display = "none";
         key = document.getElementById('query').value;
          counter = 1;
          //checking if a key value is empty or default
@@ -98,6 +96,9 @@
              return false; // cancel submission and go back to the textbox
          }
          else {
+
+             document.getElementById("loading").style.display = "block";
+             document.getElementById("content").style.display = "none";
              document.getElementById("error").innerHTML = "";
              document.getElementById("Summary").style.display = 'none';
              var url = 'https://api.twitch.tv/kraken/search/streams?q=' + key + '&limit=10&callback=?';
