@@ -105,8 +105,7 @@
              getJSONP(url, function (data) { // anonymous function to do all the processing
                  if (data._total > 0) { // check if ateast one result exist
                      showResults(data); // show the results 
-
-                 }
+                     }
                  else { // no result found
                      document.getElementById("results").innerHTML = "<h3> No results found! Please try another search.</h3>";
                      document.getElementById('query').focus(); // giving the texbox focus again
@@ -159,7 +158,7 @@
 
      function showResults(data) {
          console.log(data);
-         if (data._total > 0) {
+         if (data.streams.length > 0) {
              var output = '';
              for (var result = 0; result < data.streams.length; result++) {
                  output += "<div class=\"col-xs-12 col-sm-12 col-lg-12 stream\"><img class=\"img-test img-responsive\" src=\"" + data.streams[result].preview.medium + "\"></img><div float=\"right\"><h3>" + data.streams[result].game + "</h3> Game Name:" + data.streams[result].channel.game + " - " + data.streams[result].viewers + " Viewers<br/>Stream Description: " + data.streams[result].channel.status + "</div></div>";
@@ -169,14 +168,14 @@
              page = Math.ceil(data._total / 10); // count the number of pages
              document.getElementById("pageNumber").innerHTML = counter + "/" + page; // update the page number
              document.getElementById("Summary").style.display = 'block'; // show summary
-             document.getElementById("loading").style.display = "none";
-             document.getElementById("content").style.display = "block";
+             document.getElementById("loading").style.display = "none";//remove loading
+             document.getElementById("content").style.display = "block"; //show results
          }
          else {
             
              document.getElementById("loading").style.display = "none";
              document.getElementById("content").style.display = "block";
-             document.getElementById("results").innerHTML = "<h3> No results found! Please try another search.</h3>";
+             document.getElementById("results").innerHTML = "<h3> No results returned! Please try again.</h3>";
          }
           
 
