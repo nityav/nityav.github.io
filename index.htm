@@ -45,7 +45,7 @@
                         <div id="pagination" class="pull-right">
                             <img src="images/arrow-left.png" id="arrow-left" class="cursor" title="Previous" onclick="prev()" />
                             <span id="pageNumber"></span>
-                            <img src="images/arrow-right.png" id="arrow-right" class="cursor" title="Next" onclick="Next()" />
+                            <img src="images/arrow-right.png" id="arrow-right" class="cursor" title="Next" onclick="next()" />
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,6 @@
          this.page = Math.ceil(this.data._total / 10);
          this.tshowResults();
 
-
      }
 
      Twitch.counter = 1;
@@ -126,7 +125,7 @@
          document.getElementById("loading").style.display = "block";
          document.getElementById("content").style.display = "none";
          document.getElementById("error").innerHTML = "";
-         if (Twitch.counter < page) {
+         if (Twitch.counter < this.page) {
              var url = this.data._links.next + '&callback=?';
              ++Twitch.counter; // updating counter to update the page number
              getJSONPTwitch(url, function (data) { myobj = new Twitch(data); });
@@ -170,8 +169,7 @@
              }
              document.getElementById("results").innerHTML = output;  //print result
              document.getElementById('total').innerHTML = this.data._total; // in a lot of cases i have observed the total changes so checking it with each call
-             page = Math.ceil(this.data._total / 10); // count the number of pages
-             document.getElementById("pageNumber").innerHTML = Twitch.counter + "/" + page; // update the page number
+             document.getElementById("pageNumber").innerHTML = Twitch.counter + "/" + this.page; // update the page number
              document.getElementById("Summary").style.display = 'block'; // show summary
              document.getElementById("loading").style.display = "none"; //remove loading
              document.getElementById("content").style.display = "block"; //show results
@@ -198,7 +196,7 @@
          }
      }
 
-     function Next() {
+     function next() {
          myobj.tnext();
      }
 
