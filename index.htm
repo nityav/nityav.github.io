@@ -103,7 +103,7 @@
              document.getElementById("Summary").style.display = 'none';
              var url = 'https://api.twitch.tv/kraken/search/streams?q=' + key + '&limit=10&callback=?';
              // calling the twitch API
-             getJSONPTwitch(url, function (data) {  myobj = new Twitch(data); });
+             getJSONPTwitch(url, function (data) {  twobj = new Twitch(data); });
            
             
                 
@@ -114,21 +114,21 @@
      function Twitch(data) {
 
          this.data = data;
-         this.page = Math.ceil(this.data._total / 10);
-         this.tshowResults();
+         this.page = Math.ceil(this.data._total / 10); // getting the total number of pages , 10 per page
+         this.tshowResults(); // always show results 
 
      }
 
-     Twitch.counter = 1;
+     Twitch.counter = 1; // static variable for the page count
 
      Twitch.prototype.tnext = function () {
          document.getElementById("loading").style.display = "block";
          document.getElementById("content").style.display = "none";
          document.getElementById("error").innerHTML = "";
          if (Twitch.counter < this.page) {
-             var url = this.data._links.next + '&callback=?';
+             var url = this.data._links.next + '&callback=?'; // getting the next link from the obj
              ++Twitch.counter; // updating counter to update the page number
-             getJSONPTwitch(url, function (data) { myobj = new Twitch(data); });
+             getJSONPTwitch(url, function (data) { twobj = new Twitch(data); });
 
 
          }
@@ -147,8 +147,8 @@
          document.getElementById("error").innerHTML = "";
          if (Twitch.counter > 1) {
              --Twitch.counter; // updating counter to set offset
-             var url = this.data._links.prev + '&callback=?'
-             getJSONPTwitch(url, function (data) { myobj = new Twitch(data); });
+             var url = this.data._links.prev + '&callback=?' // getting the previous offset
+             getJSONPTwitch(url, function (data) { twobj = new Twitch(data); });
             
          }
          else {
@@ -197,11 +197,11 @@
      }
 
      function next() {
-         myobj.tnext();
+         twobj.tnext();
      }
 
      function prev() {
-         myobj.tprev();
+         twobj.tprev();
      }
 
 
