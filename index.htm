@@ -138,7 +138,7 @@
              document.getElementById("content").style.display = "block";
          }
 
-         console.log(Twitch.counter);
+         
      };
 
      Twitch.prototype.tprev = function () {
@@ -157,11 +157,11 @@
              document.getElementById("content").style.display = "block";
 
          }
-         console.log(Twitch.counter);
+        
      };
 
      Twitch.prototype.tshowResults = function () {
-         console.log(this.data);
+        
          if (this.data.streams.length > 0) {
              var output = '';
              for (var result = 0; result < this.data.streams.length; result++) {
